@@ -54,6 +54,7 @@ public interface GitProtocol {
 	 * @return a String, operation message.
 	 */
 	public String pull(String _repo_name);
-	
-	
+
+	public boolean leaveNetwork();
+
 }
