@@ -17,9 +17,6 @@ public class StartGitProtocol {
 	@Option(name="-id", aliases="--identifierpeer", usage="the unique identifier for this peer", required=true)
 	private static int id;
 
-	@Option(name="-f", aliases="--file", usage="the path of the directory used as repository", required=true)
-	private static String repositoryPath;
-
 	public static void main(String[] args) throws Exception {
 		StartGitProtocol gitProtocol = new StartGitProtocol();
         final CmdLineParser parser = new CmdLineParser(gitProtocol);  
