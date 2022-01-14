@@ -20,10 +20,7 @@
 		</repository>
 	</repositories>
 
-
-
 	<dependencies>
-
 		<dependency>
 			<groupId>net.tomp2p</groupId>
 			<artifactId>tomp2p-all</artifactId>
@@ -46,6 +43,12 @@
 			<artifactId>text-io</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.15</version>
+		</dependency>	
 	</dependencies>
 	<build>
 		<plugins>
@@ -76,7 +79,7 @@
 							<archive>
 								<manifest>
 									<mainClass>
-										it.isislab.p2p.chat.Example
+										it.unisa.p2p.StartProtocol
 									</mainClass>
 								</manifest>
 							</archive>
