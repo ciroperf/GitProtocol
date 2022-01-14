@@ -33,7 +33,15 @@ public class GitRepository implements Serializable{
     private String repositoryDirectory;
     private String digest;
 
-    public GitRepository(String repositoryName, String repositoryDirectory) throws NoSuchAlgorithmException, IOException {
+    /**
+     * create a repository and execute the first commit
+     * @param repositoryName name of repository
+     * @param repositoryDirectory name of directory
+     * @throws NoSuchAlgorithmException 
+     * @throws IOException
+     * @throws NotADirectoryException thrown if repositoryDirectory is not a directory
+     */
+    public GitRepository(String repositoryName, String repositoryDirectory) throws NoSuchAlgorithmException, IOException, NotADirectoryException {
         this.repositoryName = repositoryName;
         this.repositoryDirectory = repositoryDirectory;
         this.commitList = new ArrayList<CommitOperation>();
