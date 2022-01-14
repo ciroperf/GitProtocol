@@ -2,94 +2,168 @@ package it.unisa.p2p.gitprotocol;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
-import net.tomp2p.dht.FutureGet;
-import net.tomp2p.dht.PeerBuilderDHT;
-import net.tomp2p.dht.PeerDHT;
-import net.tomp2p.futures.FutureBootstrap;
-import net.tomp2p.futures.FutureDirect;
-import net.tomp2p.p2p.Peer;
-import net.tomp2p.p2p.PeerBuilder;
-import net.tomp2p.peers.Number160;
-import net.tomp2p.peers.PeerAddress;
-import net.tomp2p.rpc.ObjectDataReply;
-import net.tomp2p.storage.Data;
+import it.unisa.p2p.gitprotocol.operations.CommitOperation;
+import it.unisa.p2p.gitprotocol.operations.OperationMessages;
+import it.unisa.p2p.gitprotocol.repository.GitRepository;
+import it.unisa.p2p.gitprotocol.storage.StorageDHT;
+import net.tomp2p.dht.Storage;
 
 
 public class GitProtocolImpl implements GitProtocol {
 
-    final private Peer peer;
-    final private PeerDHT _dht;
-    final private int DEFAULT_MASTER_PORT=4000;
-    final private ArrayList<String> repositories = new ArrayList<String>();
-
-    public GitProtocolImpl(int _id, String _master_peer) throws Exception {
-        peer= new PeerBuilder(Number160.createHash(_id)).ports(DEFAULT_MASTER_PORT+_id).start();
-		_dht = new PeerBuilderDHT(peer).start();	
-		
-		FutureBootstrap fb = peer.bootstrap().inetAddress(InetAddress.getByName(_master_peer)).ports(DEFAULT_MASTER_PORT).start();
-		fb.awaitUninterruptibly();
-		if(fb.isSuccess()) {
-			peer.discover().peerAddress(fb.bootstrapTo().iterator().next()).start().awaitUninterruptibly();
-		}else {
-			throw new Exception("Error in master peer bootstrap.");
-		}
-		
-    }
-
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean createRepository(String _repo_name, File _directory) {
-        try {
-			FutureGet futureGet = _dht.get(Number160.createHash(_repo_name)).start();
-			futureGet.awaitUninterruptibly();
-			if (futureGet.isSuccess()) {
-				HashSet<PeerAddress> peers_on_repository;
-				peers_on_repository = (HashSet<PeerAddress>) futureGet.dataMap().values().iterator().next().object();
-				for(PeerAddress peer:peers_on_repository)
-				{
-					FutureDirect futureDirect = _dht.peer().sendDirect(peer).object(_directory).start();
-					futureDirect.awaitUninterruptibly();
-				}
-				
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-    }
-
+    final private Storage storage;
+    private GitRepository repository;
+    private boolean fetch;
     
+    /**
+     * Implementation of GitProtocol
+     * @param storage Storage to store data
+     */
+    public GitProtocolImpl(Storage storage) {
+		this.storage = storage;
+        this.repository = null;
+        this. fetch = false;
+    }
+
+    /**
+     * Create a repository in the directory
+     * @param _repo_name String with the name of the repository
+     * @param _directory File containing the directory of the repository
+     * @return boolean true if the repostory creates succesfully, false otherwise
+     */
+    public boolean createRepository(String _repo_name, File _directory) {
+        if (this.repository != null) {
+            return false;
+        }
+
+        try {
+            this.repository = new GitRepository(_directory.getAbsolutePath(), _repo_name);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Adds new files to the repository
+     * @param _repo_name String, name of the repository where to store file
+     * @param files List<File>, list of files to be added to the repository
+     * @return boolean, true if the files are added, false otherwise
+     */
     @Override
     public boolean addFilesToRepository(String _repo_name, List<File> files) {
-        // TODO Auto-generated method stub
-        return false;
+        try {
+            if (this.repository != null && this.repository.getRepositoryName().equals(_repo_name)) {
+                return this.repository.addFiles(files);
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
+    /**
+     * Adds a commit to the list of commit
+     * @param _repo_name String, name of the repository
+     * @param _message String, message included in commit
+     * @return boolean, true if the commit is added, false otherwise
+     */
     @Override
     public boolean commit(String _repo_name, String _message) {
-        // TODO Auto-generated method stub
-        return false;
+        if (this.repository == null) {
+            return false;
+        }
+
+        try {
+            if (this.repository.getRepositoryName().equals(_repo_name)) {
+                return this.repository.addCommit(_message, _repo_name);
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
+    /**
+     * executes push of the files on storage
+     * @param _repo_name String, name of the repository
+     * @return String with the result of the operation
+     */
     @Override
     public String push(String _repo_name) {
-        // TODO Auto-generated method stub
-        return null;
+        if (this.repository == null) {
+            return OperationMessages.REPOSITORY_NOT_FOUND;
+        }
+
+        try {
+            GitRepository remoteRepository = ((StorageDHT)storage).get(_repo_name);
+            if (remoteRepository == null || this.repository.getDigest().contains(remoteRepository.getDigest())) {
+                ((StorageDHT)this.storage).put(_repo_name, this.repository);
+                return OperationMessages.PUSH_MESSAGE;
+            } else {
+                return OperationMessages.PUSH_CONFLICT;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return OperationMessages.ERROR + ": " + e.getMessage();
+        } catch (ClassNotFoundException e) {
+            return OperationMessages.ERROR + ": " + e.getMessage();
+        }
     }
+
+    /**
+     * @param _repo_name String name of the repository
+     * @return String with the result of the operation
+     */
     @Override
     public String pull(String _repo_name) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public boolean leaveNetwork() {
-		_dht.peer().announceShutdown().start().awaitUninterruptibly();
-		return true;
-	}
-    
+        try {
+            GitRepository repositoryPulled = ((StorageDHT)storage).get(_repo_name);
+            if (repositoryPulled == null) {
+                return OperationMessages.REPOSITORY_NOT_FOUND;
+            }
+            
+            if (repositoryPulled.getDigest().equals(this.repository.getDigest())) {
+                return OperationMessages.NO_FILE_CHANGED;
+            }
+
+            if (!repositoryPulled.getDigest().contains(this.repository.getDigest()) && !this.fetch) {
+                this.fetch = true;
+                return OperationMessages.PULL_CONFLICT;
+            }
+
+            this.repository.replaceFileFromHashmap(repositoryPulled.getFileHashmap());
+            String repositoryDirectory = this.repository.getRepositoryDirectory();
+            if (!fetch) {
+                for (CommitOperation commitOperation: repositoryPulled.getCommitList()) {
+                    if (!this.repository.getCommitList().contains(commitOperation)) {
+                        this.repository.addCommit(commitOperation);
+                    }
+                }
+            } else {
+                this.repository.setCommitList(repositoryPulled.getCommitList());
+            }
+
+            this.repository.setRepositoryDirectory(repositoryDirectory);
+            this.fetch = false;
+        } catch (ClassNotFoundException e) {
+            return OperationMessages.ERROR + ": " + e.getMessage();
+        } catch (IOException e) {
+            return OperationMessages.ERROR + ": " + e.getMessage();
+        }
+        return OperationMessages.PULL_MESSAGE;
+    }  
     
 }

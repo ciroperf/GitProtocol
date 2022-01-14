@@ -55,6 +55,4 @@ public interface GitProtocol {
 	 */
 	public String pull(String _repo_name);
 
-	public boolean leaveNetwork();
-
 }

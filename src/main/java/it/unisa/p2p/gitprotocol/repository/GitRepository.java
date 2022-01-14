@@ -126,18 +126,18 @@ public class GitRepository implements Serializable{
 
     /**
      * Adds new file to repository
-     * @param fileList ArrayList of files to be added
+     * @param files ArrayList of files to be added
      * @return true if file are added, false otherwise
      * @throws IOException
      */
-    public boolean addFiles(ArrayList<File> fileList) throws IOException{
+    public boolean addFiles(List<File> files) throws IOException{
         boolean bool[] = {true};
 
-        if (fileList.size() == 0) {
+        if (files.size() == 0) {
             return false;
         }
 
-        fileList.parallelStream().filter(f -> f.getAbsolutePath().startsWith(this.repositoryDirectory)).forEach(f -> {
+        files.parallelStream().filter(f -> f.getAbsolutePath().startsWith(this.repositoryDirectory)).forEach(f -> {
             this.fileList.add(f);
             try {
                 this.fileHashmap.put(f, Files.readAllBytes(Paths.get(f.toURI())));
@@ -148,6 +148,25 @@ public class GitRepository implements Serializable{
         });
         
         return bool[0];
+    }
+
+    /**
+     * adds a commit to commitList
+     * @param repositoryName String, name of the repository
+     * @param message String, message contained in the commit
+     * @return boolean, true if commit succeded, false otherwise
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     */
+    public boolean addCommit(String repositoryName, String message) throws IOException, NoSuchAlgorithmException {
+        String digest = getFolderDigest();
+        if (digest.equals(this.digest) && commitList.size()> 0) {
+            return false;
+        }
+        this.digest = digest;
+        CommitOperation commitOperation = new CommitOperation(message, repositoryName, digest);
+        commitList.add(commitOperation);
+        return true;
     }
 
     /**
