@@ -79,7 +79,7 @@
 							<archive>
 								<manifest>
 									<mainClass>
-										it.unisa.p2p.StartProtocol
+										it.unisa.p2p.App
 									</mainClass>
 								</manifest>
 							</archive>

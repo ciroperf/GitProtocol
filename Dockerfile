@@ -4,7 +4,7 @@ RUN git clone https://github.com/ciroperf/GitProtocol.git
 
 FROM maven:3.5-jdk-8-alpine
 WORKDIR /app
-COPY --from=0 /app/p2pgitprotocol /app
+COPY --from=0 /app/GitProtocol /app
 RUN mvn package
 
 FROM openjdk:8-jre-alpine
