@@ -8,12 +8,11 @@ import it.unisa.p2p.gitprotocol.operations.CommitOperation;
 import it.unisa.p2p.gitprotocol.operations.OperationMessages;
 import it.unisa.p2p.gitprotocol.repository.GitRepository;
 import it.unisa.p2p.gitprotocol.storage.StorageDHT;
-import net.tomp2p.dht.Storage;
 
 
 public class GitProtocolImpl implements GitProtocol {
 
-    final private Storage storage;
+    final private StorageDHT storage;
     private GitRepository repository;
     private boolean fetch;
     
@@ -21,7 +20,7 @@ public class GitProtocolImpl implements GitProtocol {
      * Implementation of GitProtocol
      * @param storage Storage to store data
      */
-    public GitProtocolImpl(Storage storage) {
+    public GitProtocolImpl(StorageDHT storage) {
 		this.storage = storage;
         this.repository = null;
         this. fetch = false;
