@@ -131,10 +131,6 @@ public class App {
 				}
 			}
 	
-
-
-
-
 		} catch (CmdLineException clEx) {  
 			System.err.println("ERROR: Unable to parse command-line options: " + clEx);  
 		}  
@@ -142,11 +138,11 @@ public class App {
 
 	public static void printMenu(TextTerminal terminal) {
 		terminal.printf("\n1 - CREATE REPOSITORY\n");
-		terminal.printf("\n2 - A\n");
-		terminal.printf("\n3 - UN SUBSCRIBE ON TOPIC\n");
-		terminal.printf("\n4 - PUBLISH ON TOPIC\n");
-		terminal.printf("\n5 - EXIT\n");
-		terminal.printf("");
+		terminal.printf("\n2 - ADD FILE TO REPOSITORY\n");
+		terminal.printf("\n3 - COMMIT\n");
+		terminal.printf("\n4 - PUSH\n");
+		terminal.printf("\n5 - PULL\n");
+		terminal.printf("\n6 - EXIT\n");
 
 	}
 			
