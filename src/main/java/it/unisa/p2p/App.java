@@ -44,7 +44,7 @@ public class App {
 			while(running) {
 				printMenu(terminal);
 				int option = textIO.newIntInputReader()
-						.withMaxVal(5)
+						.withMaxVal(6)
 						.withMinVal(1)
 						.read("> Option");
 					
@@ -58,8 +58,9 @@ public class App {
 					        .read(" Repository Name:");
 						terminal.printf("\nENTER DIRECTORY NAME\n");
 						String directoryName = textIO.newStringInputReader()
-					        .withDefaultValue("default-message")
+					        .withDefaultValue("default-directory")
 					        .read(" Directory name:");
+						logger.info("directory name: " + directoryName);
 						File directory = new File(directoryName);
 						if (gitProtocol.createRepository(repositoryName, directory)) {
 							terminal.printf("\nRepository created succesfully\n");
@@ -92,7 +93,7 @@ public class App {
 						break;
 					case 3:
 						terminal.printf("\nENTER REPOSITORY NAME\n");
-						logger.info("adding files to repository");
+						logger.info("commit");
 						repositoryName = textIO.newStringInputReader()
 							.withDefaultValue("default-repository")
 							.read(" Repository Name:");
@@ -109,7 +110,7 @@ public class App {
 						break;
 					case 4:
 						terminal.printf("\nENTER REPOSITORY NAME\n");
-						logger.info("adding files to repository");
+						logger.info("push");
 						repositoryName = textIO.newStringInputReader()
 							.withDefaultValue("default-repository")
 							.read(" Repository Name:");
@@ -117,7 +118,7 @@ public class App {
 						break;
 					case 5:
 						terminal.printf("\nENTER REPOSITORY NAME\n");
-						logger.info("adding files to repository");
+						logger.info("pull");
 						repositoryName = textIO.newStringInputReader()
 							.withDefaultValue("default-repository")
 							.read(" Repository Name:");
