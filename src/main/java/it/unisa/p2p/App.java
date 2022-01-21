@@ -61,7 +61,9 @@ public class App {
 					        .withDefaultValue("default-directory")
 					        .read(" Directory name:");
 						logger.info("directory name: " + directoryName);
+						
 						File directory = new File(directoryName);
+						logger.info("path:" + directory.getAbsolutePath());
 						if (gitProtocol.createRepository(repositoryName, directory)) {
 							terminal.printf("\nRepository created succesfully\n");
 						} else {
