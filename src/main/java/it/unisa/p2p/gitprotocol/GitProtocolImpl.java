@@ -38,7 +38,7 @@ public class GitProtocolImpl implements GitProtocol {
         }
 
         try {
-            this.repository = new GitRepository(_directory.getAbsolutePath(), _repo_name);
+            this.repository = new GitRepository(_repo_name, _directory.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
             return false;
