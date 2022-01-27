@@ -22,7 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 
-public class GitRepository implements Serializable{
+public class GitRepository implements Serializable {
 
     private static final long SerialVersionUID = 1L;
     
@@ -83,7 +83,7 @@ public class GitRepository implements Serializable{
      * @return ArrayList<File>
      */
     public ArrayList<File> getFileList() {
-        return this.fileList;
+        return (ArrayList<File>) this.fileList.clone();
     }
 
     /**
