@@ -44,9 +44,10 @@ public class GitRepository implements Serializable {
     public GitRepository(String repositoryName, String repositoryDirectory) throws NoSuchAlgorithmException, IOException, NotADirectoryException {
         this.repositoryName = repositoryName;
         this.repositoryDirectory = repositoryDirectory;
+        this.fileList = getAllFiles();
         this.commitList = new ArrayList<CommitOperation>();
         this.digest = getFolderDigest();
-        this.fileList = getAllFiles();
+        
         commitList.add(new CommitOperation(OperationMessages.FIRST_COMMIT_MESSAGE, repositoryName, this.digest));
         this.fileHashmap = new HashMap<>();
         for (File f: this.fileList) {
