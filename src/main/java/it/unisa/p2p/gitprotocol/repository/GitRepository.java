@@ -266,24 +266,25 @@ public class GitRepository implements Serializable{
      * @param fileStreamList ArrayList of files
      * @param includeHiddenFiles set this parameter at true if you want to include hidden files, false otherwise
      */
-    private void getInputStrams(File directory, List<FileInputStream> fileStreamList, boolean includeHiddenFiles) {
+    private void getInputStreams(File directory, List<FileInputStream> fileStreamList, boolean includeHiddenFiles) {
         File[] fileList = directory.listFiles();
 
-        if (fileList != null) {
-            Arrays.sort(fileList, (f1, f2) -> f1.getName().compareTo(f2.getName()));
+        assert (fileList != null);
 
-            for (File f: getFileList()) {
-                if (includeHiddenFiles || !f.getName().startsWith(".")) {
-                    getInputStrams(f, fileStreamList, includeHiddenFiles);
-                } else {
-                    try {
-                        fileStreamList.add(new FileInputStream(f));
-                    } catch (FileNotFoundException e) {
-                        throw new AssertionError(e.getMessage());
-                    }
+        Arrays.sort(fileList, (f1, f2) -> f1.getName().compareTo(f2.getName()));
+
+        for (File f: getFileList()) {
+            if (includeHiddenFiles || !f.getName().startsWith(".")) {
+                getInputStreams(f, fileStreamList, includeHiddenFiles);
+            } else {
+                try {
+                    fileStreamList.add(new FileInputStream(f));
+                } catch (FileNotFoundException e) {
+                    throw new AssertionError(e.getMessage());
                 }
             }
         }
+        
     }
 
     /**
@@ -297,7 +298,7 @@ public class GitRepository implements Serializable{
         
         if (directory.isDirectory()) {
             Vector<FileInputStream> fileStreams = new Vector<>();
-            getInputStrams(directory, fileStreams, false);
+            getInputStreams(directory, fileStreams, false);
             SequenceInputStream sequenceInputStream = new SequenceInputStream(fileStreams.elements());
             try {
                 String md5Hash = DigestUtils.md5Hex(sequenceInputStream);
