@@ -82,13 +82,8 @@ public class CommitOperation implements Serializable{
 
         CommitOperation commitOperation = (CommitOperation)object;
 
-        if (commitOperation.getMessage().equals(this.getMessage())
-         && commitOperation.getRepositoryName().equals(this.getRepositoryName())
-         && commitOperation.getTimestamp().equals(this.timestamp)
-         && commitOperation.getDigest().equals(this.digest))
-         return true;
-        
-        return false;
+        return this.getDigest().equals(commitOperation.getDigest()) &&
+            this.getRepositoryName().equals(commitOperation.getRepositoryName());
     }
 
 }
