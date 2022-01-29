@@ -107,7 +107,7 @@ public class GitProtocolImpl implements GitProtocol {
 
         try {
             GitRepository remoteRepository = ((StorageDHT)storage).get(_repo_name);
-            if (remoteRepository == null || this.repository.getDigest().contains(remoteRepository.getDigest())) {
+            if (remoteRepository == null || this.repository.getDigests().contains(remoteRepository.getDigests())) {
                 ((StorageDHT)this.storage).put(_repo_name, this.repository);
                 return OperationMessages.PUSH_MESSAGE;
             } else {
@@ -138,7 +138,7 @@ public class GitProtocolImpl implements GitProtocol {
                 return OperationMessages.NO_FILE_CHANGED;
             }
 
-            if (!repositoryPulled.getDigest().contains(this.repository.getDigest()) && !this.fetch) {
+            if (!repositoryPulled.getDigests().contains(this.repository.getDigests()) && !this.fetch) {
                 this.fetch = true;
                 return OperationMessages.PULL_CONFLICT;
             }

@@ -276,7 +276,9 @@ public class GitRepository implements Serializable {
 
         for (File f: getFileList()) {
             if (includeHiddenFiles || !f.getName().startsWith(".")) {
-                getInputStreams(f, fileStreamList, includeHiddenFiles);
+                if (f.isDirectory()) {
+                    getInputStreams(f, fileStreamList, includeHiddenFiles);
+                }
             } else {
                 try {
                     fileStreamList.add(new FileInputStream(f));
