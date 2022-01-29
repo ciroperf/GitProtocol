@@ -278,12 +278,12 @@ public class GitRepository implements Serializable {
             if (includeHiddenFiles || !f.getName().startsWith(".")) {
                 if (f.isDirectory()) {
                     getInputStreams(f, fileStreamList, includeHiddenFiles);
-                }
-            } else {
-                try {
-                    fileStreamList.add(new FileInputStream(f));
-                } catch (FileNotFoundException e) {
-                    throw new AssertionError(e.getMessage());
+                } else {
+                    try {
+                        fileStreamList.add(new FileInputStream(f));
+                    } catch (FileNotFoundException e) {
+                        throw new AssertionError(e.getMessage());
+                    }
                 }
             }
         }
