@@ -298,21 +298,16 @@ public class GitRepository implements Serializable {
      */
     public String getFolderDigest() throws NoSuchAlgorithmException, IOException {
         File directory = new File(repositoryDirectory);
-        
-        if (directory.isDirectory()) {
-            Vector<FileInputStream> fileStreams = new Vector<>();
-            getInputStreams(directory, fileStreams, false);
-            SequenceInputStream sequenceInputStream = new SequenceInputStream(fileStreams.elements());
-            try {
-                String md5Hash = DigestUtils.md5Hex(sequenceInputStream);
-                sequenceInputStream.close();
-                return md5Hash;
-            } catch (IOException e) {
-                throw new RuntimeException("Error in" + directory.getAbsolutePath(), e);
-            }
-            
+        assert(directory.isDirectory());
+        Vector<FileInputStream> fileStreams = new Vector<>();
+        getInputStreams(directory, fileStreams, false);
+        SequenceInputStream sequenceInputStream = new SequenceInputStream(fileStreams.elements());
+        try {
+            String md5Hash = DigestUtils.md5Hex(sequenceInputStream);
+            sequenceInputStream.close();
+            return md5Hash;
+        } catch (IOException e) {
+            throw new RuntimeException("Error in" + directory.getAbsolutePath(), e);
         }
-
-        return null;
     }
 }
