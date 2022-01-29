@@ -17,7 +17,7 @@ public class CommitOperation implements Serializable{
      * @param reopositoryName name of the repository to execute commit on
      * @param digest digest
      */
-    public CommitOperation(String message, String reopositoryName, String digest) {
+    public CommitOperation(String reopositoryName, String message, String digest) {
         this.message = message;
         this.repositoryName = reopositoryName;
         this.timestamp = System.currentTimeMillis();

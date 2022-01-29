@@ -83,11 +83,7 @@ public class GitProtocolImpl implements GitProtocol {
         }
 
         try {
-            if (this.repository.getRepositoryName().equals(_repo_name)) {
-                return this.repository.addCommit(_message, _repo_name);
-            } else {
-                return false;
-            }
+            return this.repository.addCommit(_repo_name, _message);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

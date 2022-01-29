@@ -165,7 +165,7 @@ public class GitRepository implements Serializable {
             return false;
         }
         this.digest = digest;
-        CommitOperation commitOperation = new CommitOperation(message, repositoryName, digest);
+        CommitOperation commitOperation = new CommitOperation(repositoryName, message, digest);
         commitList.add(commitOperation);
         return true;
     }
