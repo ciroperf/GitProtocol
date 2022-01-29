@@ -103,11 +103,11 @@ public class GitProtocolImpl implements GitProtocol {
 
         try {
             GitRepository remoteRepository = ((StorageDHT)storage).get(_repo_name);
-            if (remoteRepository == null || this.repository.getDigests().contains(remoteRepository.getDigests())) {
+            if (remoteRepository == null || this.repository.getDigests().contains(remoteRepository.getDigest())) {
                 ((StorageDHT)this.storage).put(_repo_name, this.repository);
                 return OperationMessages.PUSH_MESSAGE;
             } else {
-                return OperationMessages.PUSH_CONFLICT;
+                return OperationMessages.PULL_REQUIRED;
             }
 
         } catch (IOException e) {
@@ -134,7 +134,7 @@ public class GitProtocolImpl implements GitProtocol {
                 return OperationMessages.NO_FILE_CHANGED;
             }
 
-            if (!repositoryPulled.getDigests().contains(this.repository.getDigests()) && !this.fetch) {
+            if (!repositoryPulled.getDigests().contains(this.repository.getDigest()) && !this.fetch) {
                 this.fetch = true;
                 return OperationMessages.PULL_CONFLICT;
             }
@@ -154,9 +154,9 @@ public class GitProtocolImpl implements GitProtocol {
             this.repository.setRepositoryDirectory(repositoryDirectory);
             this.fetch = false;
         } catch (ClassNotFoundException e) {
-            return OperationMessages.ERROR + ": " + e.getMessage();
+            e.printStackTrace();
         } catch (IOException e) {
-            return OperationMessages.ERROR + ": " + e.getMessage();
+            e.printStackTrace();
         }
         return OperationMessages.PULL_MESSAGE;
     }  

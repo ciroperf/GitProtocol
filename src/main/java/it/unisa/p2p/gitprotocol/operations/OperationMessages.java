@@ -8,6 +8,7 @@ public class OperationMessages {
     public static final String PULL_MESSAGE = "Pull executed";
     public static final String PUSH_CONFLICT = "Push went wrong, try pull first";
     public static final String PULL_CONFLICT = "Pull went wrong, try again";
+    public static final String PULL_REQUIRED = "Pull required";
     public static final String NO_FILE_CHANGED  = "No file changed";
     public static final String ERROR = "Error";
 }
