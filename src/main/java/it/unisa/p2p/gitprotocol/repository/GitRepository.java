@@ -48,7 +48,7 @@ public class GitRepository implements Serializable {
         this.commitList = new ArrayList<CommitOperation>();
         this.digest = getFolderDigest();
         
-        commitList.add(new CommitOperation(OperationMessages.FIRST_COMMIT_MESSAGE, repositoryName, this.digest));
+        commitList.add(new CommitOperation(repositoryName, OperationMessages.FIRST_COMMIT_MESSAGE, this.digest));
         this.fileHashmap = new HashMap<>();
         for (File f: this.fileList) {
             this.fileHashmap.put(f, Files.readAllBytes(f.toPath()));
