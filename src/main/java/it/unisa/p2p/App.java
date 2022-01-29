@@ -103,7 +103,7 @@ public class App {
 						String message = textIO.newStringInputReader()
 								.withDefaultValue("default-message")
 								.read(" Commit Message:");
-						logger.info("message: " + message);
+						logger.info("Repository:" + repositoryName + "\nmessage: " + message);
 						if (gitProtocol.commit(repositoryName, message)) {
 							terminal.printf("\nCommit executed succesfully\n");
 						} else {
