@@ -134,9 +134,11 @@ public class GitRepository implements Serializable {
     public boolean addFiles(List<File> files) throws IOException{
         boolean bool[] = {false};
 
-        if (files.size() == 0) {
+        if (files.size() <= 0) {
             return false;
         }
+
+        System.out.println("test in function");
 
         files.parallelStream().filter(f -> f.getAbsolutePath().startsWith(this.repositoryDirectory)).forEach(f -> {
             try {
