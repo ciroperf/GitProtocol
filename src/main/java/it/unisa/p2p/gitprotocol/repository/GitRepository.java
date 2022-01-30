@@ -270,6 +270,8 @@ public class GitRepository implements Serializable {
     private void getInputStreams(File directory, List<FileInputStream> fileStreamList, boolean includeHiddenFiles) {
         File[] fileList = directory.listFiles();
 
+        System.out.println("num of files in directory=" + directory.getAbsolutePath() + ": " + fileList.length);
+
         assert (fileList != null);
 
         Arrays.sort(fileList, (f1, f2) -> f1.getName().compareTo(f2.getName()));
