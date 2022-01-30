@@ -132,16 +132,18 @@ public class GitRepository implements Serializable {
      * @throws IOException
      */
     public boolean addFiles(List<File> files) throws IOException{
-        boolean bool[] = {true};
+        boolean bool[] = {false};
 
         if (files.size() == 0) {
             return false;
         }
 
         files.parallelStream().filter(f -> f.getAbsolutePath().startsWith(this.repositoryDirectory)).forEach(f -> {
-            this.fileList.add(f);
             try {
+                this.fileList.add(f);
                 this.fileHashmap.put(f, Files.readAllBytes(Paths.get(f.toURI())));
+                bool[0] = true;
+                System.out.println("added files:" + fileList + fileHashmap);
             } catch (IOException e) {
                 bool[0] = false;
                 e.printStackTrace();
