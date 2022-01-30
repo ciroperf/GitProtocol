@@ -160,7 +160,6 @@ public class GitRepository implements Serializable {
      * @throws NoSuchAlgorithmException
      */
     public boolean addCommit(String repositoryName, String message) throws IOException, NoSuchAlgorithmException {
-        System.out.println("in commit add");
         String digest = getFolderDigest();
         if (digest.equals(this.digest) && commitList.size()> 0) {
             System.out.println("error in commit add");
@@ -281,6 +280,7 @@ public class GitRepository implements Serializable {
                     getInputStreams(f, fileStreamList, includeHiddenFiles);
                 } else {
                     try {
+                        System.out.println("file added to stream:" + f.getName());
                         fileStreamList.add(new FileInputStream(f));
                     } catch (FileNotFoundException e) {
                         throw new AssertionError(e.getMessage());
