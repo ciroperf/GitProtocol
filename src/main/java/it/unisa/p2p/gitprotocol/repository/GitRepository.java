@@ -138,7 +138,7 @@ public class GitRepository implements Serializable {
             return false;
         }
 
-        System.out.println("test in function");
+        System.out.println("test in function " + files.get(0).getAbsolutePath());
 
         files.parallelStream().filter(f -> f.getAbsolutePath().startsWith(this.repositoryDirectory)).forEach(f -> {
             try {
