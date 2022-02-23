@@ -24,7 +24,7 @@ public class StorageDHT implements StorageInterface<String, GitRepository>{
 
     public StorageDHT(int peerId, int port, String bootStrapHostName, int bootStrapPort) throws IOException, Exception {
 
-        peer = new PeerBuilderDHT(new PeerBuilder(Number160.createHash(peerId)).ports(port+peerId).start()).start();
+        peer = new PeerBuilderDHT(new PeerBuilder(Number160.createHash(peerId)).ports(port).start()).start();
 
         FutureBootstrap bs = this.peer.peer().bootstrap().inetAddress(InetAddress.getByName(bootStrapHostName)).ports(bootStrapPort).start();
         if (bs.isSuccess()) {
