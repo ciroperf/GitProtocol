@@ -22,13 +22,16 @@ public class StorageDHT implements StorageInterface<String, GitRepository>{
     
     final private PeerDHT peer;
 
-    public StorageDHT(int peerId, int port, String bootStrapHostName, int bootStrapPort) throws IOException {
-        peer = new PeerBuilderDHT(new PeerBuilder(Number160.createHash(peerId)).ports(port).start()).start();
+    public StorageDHT(int peerId, int port, String bootStrapHostName, int bootStrapPort) throws IOException, Exception {
+
+        peer = new PeerBuilderDHT(new PeerBuilder(Number160.createHash(peerId)).ports(port+peerId).start()).start();
 
         FutureBootstrap bs = this.peer.peer().bootstrap().inetAddress(InetAddress.getByName(bootStrapHostName)).ports(bootStrapPort).start();
         if (bs.isSuccess()) {
             peer.peer().discover().peerAddress(bs.bootstrapTo().iterator().next()).start().awaitUninterruptibly();
-        }
+        } else {
+			throw new Exception("Error in master peer bootstrap.");
+		}
     }
 
     /** 
@@ -39,8 +42,16 @@ public class StorageDHT implements StorageInterface<String, GitRepository>{
      * @throws IOException 
      */
     public boolean put(String key, GitRepository data) throws IOException {
-        peer.put(Number160.createHash(key)).data(new Data(data)).start().awaitUninterruptibly();
-        return true;
+        try {
+			FutureGet futureGet = peer.get(Number160.createHash(key)).start();
+			futureGet.awaitUninterruptibly();
+			if (futureGet.isSuccess() && futureGet.isEmpty()) 
+				peer.put(Number160.createHash(key)).data(new Data(data)).start().awaitUninterruptibly();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
     }
 
 
