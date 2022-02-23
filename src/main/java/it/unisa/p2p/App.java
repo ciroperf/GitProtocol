@@ -37,7 +37,7 @@ public class App {
             parser.parseArgument(args);
 			gitProtocol = new GitProtocolImpl(new StorageDHT(id, 4000, "127.0.0.1", 4000));
         } catch (IOException e ) {
-            logger.severe("Error while instantiating GitProtocol");
+            logger.severe("Error while instantiating GitProtocol\n" + e);
             e.printStackTrace();
             return;
         } catch (CmdLineException clEx) {  
