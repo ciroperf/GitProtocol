@@ -26,7 +26,7 @@ public class StorageDHT implements StorageInterface<String, GitRepository>{
 
         peer = new PeerBuilderDHT(new PeerBuilder(Number160.createHash(peerId)).ports(port).start()).start();
 
-        FutureBootstrap bs = this.peer.peer().bootstrap().inetAddress(InetAddress.getByName(bootStrapHostName)).ports(bootStrapPort).start();
+        FutureBootstrap bs = peer.peer().bootstrap().inetAddress(InetAddress.getByName(bootStrapHostName)).ports(bootStrapPort).start();
         if (bs.isSuccess()) {
             peer.peer().discover().peerAddress(bs.bootstrapTo().iterator().next()).start().awaitUninterruptibly();
         } else {
