@@ -195,7 +195,7 @@ public class GitRepository implements Serializable {
             OutputStream os = null;
             File localFile;
             try {
-                localFile = new File(getRepositoryDirectory() + File.pathSeparator + file.getName());
+                localFile = new File(getRepositoryDirectory() + "/" + file.getName());
                 os = new FileOutputStream(file);
                 os.write(fileHashMap.get(file));
                 os.flush();
