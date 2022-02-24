@@ -1,19 +1,16 @@
 package it.unisa.p2p.gitprotocol.storage;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.Collection;
-import it.unisa.p2p.gitprotocol.repository.GitRepository;
+import net.tomp2p.dht.FutureGet;
 import net.tomp2p.dht.PeerBuilderDHT;
 import net.tomp2p.dht.PeerDHT;
-
-
-
 import net.tomp2p.futures.FutureBootstrap;
 import net.tomp2p.p2p.PeerBuilder;
 import net.tomp2p.peers.Number160;
 import net.tomp2p.storage.Data;
-import net.tomp2p.dht.FutureGet;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.Collection;
+import it.unisa.p2p.gitprotocol.repository.GitRepository;
 
 /**
  * class that represents a storage on dht
@@ -69,6 +66,7 @@ public class StorageDHT implements StorageInterface<String, GitRepository>{
         if (futureGet.isSuccess()) {
             Collection<Data> dataMapValues = futureGet.dataMap().values();
             if (dataMapValues.isEmpty()) {
+                System.out.println("data empty");
                 return null;
             }
             return (GitRepository) futureGet.dataMap().values().iterator().next().object();
