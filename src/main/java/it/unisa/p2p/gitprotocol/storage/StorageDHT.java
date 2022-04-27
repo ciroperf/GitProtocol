@@ -40,16 +40,8 @@ public class StorageDHT implements StorageInterface<String, GitRepository>{
      * @throws IOException 
      */
     public boolean put(String key, GitRepository data) throws IOException {
-        try {
-			FutureGet futureGet = peer.get(Number160.createHash(key)).start();
-			futureGet.awaitUninterruptibly();
-			if (futureGet.isSuccess() && futureGet.isEmpty()) 
-				peer.put(Number160.createHash(key)).data(new Data(data)).start().awaitUninterruptibly();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+        peer.put(Number160.createHash(key)).data(new Data(data)).start().awaitUninterruptibly();
+        return true;
     }
 
 
