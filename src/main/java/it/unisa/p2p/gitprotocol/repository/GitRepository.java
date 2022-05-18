@@ -193,11 +193,11 @@ public class GitRepository implements Serializable {
 
         for (File file:fileHashMap.keySet()) {
             OutputStream os = null;
-            File localFile;
+            File localFile = null;
             try {
                 localFile = new File(getRepositoryDirectory() + "/" + file.getName());
                 System.out.println("In replace function 192:" + getRepositoryDirectory() + "/" + file.getName());
-                os = new FileOutputStream(file);
+                os = new FileOutputStream(localFile);
                 os.write(fileHashMap.get(file));
                 os.flush();
                 os.close();
@@ -287,7 +287,7 @@ public class GitRepository implements Serializable {
                     getInputStreams(f, fileStreamList, includeHiddenFiles);
                 } else {
                     try {
-                        System.out.println("file added to stream:" + f.getName());
+                        System.out.println("file added to stream:" + f.getAbsolutePath());
                         fileStreamList.add(new FileInputStream(f));
                     } catch (FileNotFoundException e) {
                         throw new AssertionError(e.getMessage());

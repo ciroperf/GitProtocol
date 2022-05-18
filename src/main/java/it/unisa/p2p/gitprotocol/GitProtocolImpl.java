@@ -160,6 +160,19 @@ public class GitProtocolImpl implements GitProtocol {
             e.printStackTrace();
         }
         return OperationMessages.PULL_MESSAGE;
-    }  
+    }
+
+    public String getLastDigest() {
+        return this.repository.getDigest();
+    }
+
+    public List<CommitOperation> getCommits() {
+        assert this.repository != null;
+        return this.repository.getCommitList();
+    }
+
+    public List<File> getFiles() {
+        return this.repository.getFileList();
+    }
     
 }
