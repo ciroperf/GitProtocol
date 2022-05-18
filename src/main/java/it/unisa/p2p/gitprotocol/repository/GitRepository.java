@@ -196,6 +196,7 @@ public class GitRepository implements Serializable {
             File localFile;
             try {
                 localFile = new File(getRepositoryDirectory() + "/" + file.getName());
+                System.out.println("In replace function 192:" + getRepositoryDirectory() + "/" + file.getName());
                 os = new FileOutputStream(file);
                 os.write(fileHashMap.get(file));
                 os.flush();
