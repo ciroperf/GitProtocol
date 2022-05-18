@@ -35,7 +35,8 @@ public class App {
 		
 		try {
             parser.parseArgument(args);
-			gitProtocol = new GitProtocolImpl(new StorageDHT(id, 4000, "127.0.0.1", 4000));
+			System.out.println("Master is:"+master);
+			gitProtocol = new GitProtocolImpl(new StorageDHT(id, 4000, master, 4000));
         } catch (IOException e ) {
             logger.severe("Error while instantiating GitProtocol\n" + e);
             e.printStackTrace();
