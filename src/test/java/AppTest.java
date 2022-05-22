@@ -4,21 +4,24 @@ import it.unisa.p2p.gitprotocol.operations.OperationMessages;
 import it.unisa.p2p.gitprotocol.storage.StorageDHT;
 import java.io.*;
 import java.util.Arrays;
-//import java.util.logging.Logger;
-import org.slf4j.Logger;
+
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.logging.Logger;
+//import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AppTest extends TestCase {
+public class AppTest {
 
     private StorageDHT storage;
 
     private GitProtocolImpl gitProtocol;
-    private final static String INITIAL_STRING = "Lorem ipsum dolor sit amet";
-    private final static String SECOND_STRING = "Consectetur adipiscing elit";
-    private final static String SEC_INITIAL_STRING = "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
-    private final static String SEC_SECOND_STRING = "Ut enim ad minim veniam";
+    private final static String INITIAL_STRING = "Initial string pushed master";
+    private final static String SECOND_STRING = "Second string pushed master";
+    private final static String SEC_INITIAL_STRING = "Initial string pushed peer1";
+    private final static String SEC_SECOND_STRING = "Second string pushed peer1";
     private final static String BOOTSTRAP_HN = "127.0.0.1";
-    private final static Logger log = LoggerFactory.getLogger(AppTest.class.getName());
+    private final static Logger log = Logger.getLogger(AppTest.class.getName());
     private final static Integer MASTER_PEER_ID = 0;
     private final static Integer PEER_ID_1 = 1;
     private final static Integer PEER_ID_2 = 2;
@@ -30,21 +33,24 @@ public class AppTest extends TestCase {
     private static final File REPO_FILE = new File(DIRECTORY + FAKE_REPO + "file0.txt");
     private static final File SEC_REPO_FILE = new File(DIRECTORY + FAKE_REPO + "file1.txt");
 
-
     public void setUp() throws Exception {
-        super.setUp();
+        //super.setUp();
         log.info("Creating master node");
         storage = new StorageDHT(MASTER_PEER_ID, 4000, BOOTSTRAP_HN, 4000);
         gitProtocol = new GitProtocolImpl(storage);
         writeSingleLine(REPO_FILE, INITIAL_STRING);
     }
 
+    @Test
     public void testStorage() throws Exception {
+        setUp();
         assertNotNull(storage);
-        assertNull(storage.get("Nothing"));
+        //assertNotNull(storage.get("Nothing"));
     }
 
+    @Test
     public void testCommitPullPush() throws Exception {
+        setUp();
         assertNotNull(storage);                                 // storage not null
         assertNotNull(gitProtocol);                             // gitprotocol class not null
         assertEquals(readSingleLine(REPO_FILE), INITIAL_STRING);    // file gets correct text
@@ -95,8 +101,9 @@ public class AppTest extends TestCase {
     }
 
 
+    @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
+        //super.tearDown();
         writeSingleLine(REPO_FILE, INITIAL_STRING);
         if (SEC_REPO_FILE.exists()) {
             SEC_REPO_FILE.delete();

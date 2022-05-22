@@ -6,9 +6,6 @@ FROM maven:3.5-jdk-8-alpine
 WORKDIR /app
 COPY --from=0 /app/GitProtocol /app
 
-RUN mvn install
-RUN mvn test
-
 RUN mvn package
 
 FROM openjdk:8-jre-alpine
