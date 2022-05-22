@@ -14,5 +14,3 @@ ENV ID=0
 COPY --from=1 /app/target/gitprotocol-1.0-jar-with-dependencies.jar /app
 
 CMD /usr/bin/java -jar gitprotocol-1.0-jar-with-dependencies.jar -m $MASTERIP -id $ID
-
-RUN mvn test
