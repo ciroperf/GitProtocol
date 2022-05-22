@@ -1,4 +1,4 @@
-import ;
+import junit.framework.TestCase;
 import it.unisa.p2p.gitprotocol.GitProtocolImpl;
 import it.unisa.p2p.gitprotocol.operations.OperationMessages;
 import it.unisa.p2p.gitprotocol.storage.StorageDHT;
@@ -32,7 +32,7 @@ public class AppTest extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         log.info("Creating master node");
-        storage = new DHTStorage(MASTER_PEER_ID, 4000, BOOTSTRAP_HN, 4000);
+        storage = new StorageDHT(MASTER_PEER_ID, 4000, BOOTSTRAP_HN, 4000);
         gitProtocol = new GitProtocolImpl(storage);
         writeSingleLine(REPO_FILE, INITIAL_STRING);
     }
@@ -53,11 +53,11 @@ public class AppTest extends TestCase {
         assertFalse(gitProtocol.createRepository(REPO_NAME, REPO)); // cannot create again repo
         assertEquals(1, gitProtocol.getCommits().size());
         log.info("Trying to make a pull: it should not work");
-        assertEquals(gitProtocol.pull(REPO_NAME), Operationmessage.NO_REPO_FOUND);  // i'm trying to pull a repo not in dht
+        assertEquals(gitProtocol.pull(REPO_NAME), OperationMessages.REPOSITORY_NOT_FOUND);  // i'm trying to pull a repo not in dht
         log.info("Making first push");
-        assertEquals(gitProtocol.push(REPO_NAME), Operationmessage.PUSH_SUCCESSFULL); // pushing repo
+        assertEquals(gitProtocol.push(REPO_NAME), OperationMessages.PUSH_MESSAGE); // pushing repo
         log.info("Pulling repo");
-        assertEquals(gitProtocol.pull(REPO_NAME), Operationmessage.NO_FILE_CHANGED); // pull repo (no changes)
+        assertEquals(gitProtocol.pull(REPO_NAME), OperationMessages.NO_FILE_CHANGED); // pull repo (no changes)
         log.info("Now let's edit the file a little");
         assertEquals(1, gitProtocol.getCommits().size());
         writeSingleLine(REPO_FILE, SECOND_STRING);  // write a little edit in file
@@ -67,8 +67,8 @@ public class AppTest extends TestCase {
         assertEquals(2, gitProtocol.getCommits().size());
         assertEquals(readSingleLine(REPO_FILE), SECOND_STRING);  // unchanged
         log.info("Pulling repo: it should delete last commit");
-        assertEquals(Operationmessage.PULL_CONFLICT, gitProtocol.pull(REPO_NAME));
-        assertEquals(Operationmessage.PULL_SUCCESSFULL, gitProtocol.pull(REPO_NAME));
+        assertEquals(OperationMessages.PULL_CONFLICT, gitProtocol.pull(REPO_NAME));
+        assertEquals(OperationMessages.PULL_MESSAGE, gitProtocol.pull(REPO_NAME));
         assertEquals(readSingleLine(REPO_FILE), INITIAL_STRING);
         gitProtocol.getCommits().forEach(System.out::println);
         assertEquals(1, gitProtocol.getCommits().size());
