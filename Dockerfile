@@ -2,14 +2,13 @@ FROM alpine/git
 WORKDIR /app
 RUN git clone https://github.com/ciroperf/GitProtocol.git
 
-FROM maven:3.5-jdk-8-alpine as base
+FROM maven:3.5-jdk-8-alpine
 WORKDIR /app
 COPY --from=0 /app/GitProtocol /app
 
-FROM base as test
-CMD ["./mvnw", "test"]
+RUN mvn install
+RUN mvn test
 
-FROM base as build
 RUN mvn package
 
 FROM openjdk:8-jre-alpine
