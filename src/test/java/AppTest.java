@@ -4,7 +4,9 @@ import it.unisa.p2p.gitprotocol.operations.OperationMessages;
 import it.unisa.p2p.gitprotocol.storage.StorageDHT;
 import java.io.*;
 import java.util.Arrays;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AppTest extends TestCase {
 
@@ -16,7 +18,7 @@ public class AppTest extends TestCase {
     private final static String SEC_INITIAL_STRING = "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
     private final static String SEC_SECOND_STRING = "Ut enim ad minim veniam";
     private final static String BOOTSTRAP_HN = "127.0.0.1";
-    private final static Logger log = Logger.getLogger(AppTest.class.getName());
+    private final static Logger log = LoggerFactory.getLogger(AppTest.class.getName());
     private final static Integer MASTER_PEER_ID = 0;
     private final static Integer PEER_ID_1 = 1;
     private final static Integer PEER_ID_2 = 2;
