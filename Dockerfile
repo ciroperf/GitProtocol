@@ -8,6 +8,7 @@ COPY --from=0 /app/GitProtocol /app
 
 RUN mvn install
 RUN mvn test
+COPY /app/build/reports/tests/test/* /
 
 RUN mvn package
 
