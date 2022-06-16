@@ -60,7 +60,6 @@ public class GitProtocolImpl implements GitProtocol {
     public boolean addFilesToRepository(String _repo_name, List<File> files) {
         try {
             if (this.repository != null && this.repository.getRepositoryName().equals(_repo_name)) {
-                System.out.println("adding files...");
                 return this.repository.addFiles(files);
             } else {
                 return false;

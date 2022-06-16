@@ -145,7 +145,6 @@ public class GitRepository implements Serializable {
                 this.fileList.add(f);
                 this.fileHashmap.put(f, Files.readAllBytes(Paths.get(f.toURI())));
                 bool[0] = true;
-                System.out.println("added files:" + fileList + fileHashmap);
             } catch (IOException e) {
                 bool[0] = false;
                 e.printStackTrace();
@@ -196,7 +195,6 @@ public class GitRepository implements Serializable {
             File localFile = null;
             try {
                 localFile = new File(getRepositoryDirectory() + "/" + file.getName());
-                System.out.println("In replace function 192:" + getRepositoryDirectory() + "/" + file.getName());
                 os = new FileOutputStream(localFile);
                 os.write(fileHashMap.get(file));
                 os.flush();
@@ -275,8 +273,6 @@ public class GitRepository implements Serializable {
     private void getInputStreams(File directory, List<FileInputStream> fileStreamList, boolean includeHiddenFiles) {
         File[] fileList = directory.listFiles();
 
-        System.out.println("num of files in directory=" + directory.getAbsolutePath() + ": " + fileList.length);
-
         assert (fileList != null);
 
         Arrays.sort(fileList, (f1, f2) -> f1.getName().compareTo(f2.getName()));
@@ -287,7 +283,6 @@ public class GitRepository implements Serializable {
                     getInputStreams(f, fileStreamList, includeHiddenFiles);
                 } else {
                     try {
-                        System.out.println("file added to stream:" + f.getAbsolutePath());
                         fileStreamList.add(new FileInputStream(f));
                     } catch (FileNotFoundException e) {
                         throw new AssertionError(e.getMessage());

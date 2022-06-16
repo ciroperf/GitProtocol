@@ -58,7 +58,6 @@ public class StorageDHT implements StorageInterface<String, GitRepository>{
         if (futureGet.isSuccess()) {
             Collection<Data> dataMapValues = futureGet.dataMap().values();
             if (dataMapValues.isEmpty()) {
-                System.out.println("data empty");
                 return null;
             }
             return (GitRepository) futureGet.dataMap().values().iterator().next().object();
