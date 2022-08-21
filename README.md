@@ -71,5 +71,8 @@ Inizializzazione dell'ambiente con 4 peer
 
 ### Test
 
+I test sono stati eseguiti con junit e sono state testate tutte le funzionalità descritte fin'ora, facendo particolare attenzione infatti anche a controllare i coflitti tra push e pull. I test sono stati effettuati con quattro peer tutti aventi la stessa repository e facendo modifiche su di essa.
+Il file di test è unico e il flusso degli eventi è il seguente.
 
+![](images/picture4.png)
 
