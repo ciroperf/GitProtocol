@@ -74,5 +74,15 @@ Inizializzazione dell'ambiente con 4 peer
 I test sono stati eseguiti con junit e sono state testate tutte le funzionalità descritte fin'ora, facendo particolare attenzione infatti anche a controllare i coflitti tra push e pull. I test sono stati effettuati con quattro peer tutti aventi la stessa repository e facendo modifiche su di essa.
 Il file di test è unico e il flusso degli eventi è il seguente.
 
+- Viene inizializzato il peer master con il proprio file testuale
+- Viene creato il primo commit
+- Viene creata di nuovo la stessa repository per controllare l'errore
+- Vengono eseguiti test su push e pull
+- Viene creato un secondo file testuale
+- Vengono instanziati gli altri 3 peer
+- Tutti provano a eseguire una push ricevendo un conflitto
+- Vengono eseguite le pull e vengono confrontati i digest e i commit per verificarne l'integrità
+
+
 ![](images/picture4.png)
 
