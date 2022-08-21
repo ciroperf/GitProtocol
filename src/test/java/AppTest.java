@@ -1,17 +1,11 @@
-import junit.framework.TestCase;
-import it.unisa.p2p.gitprotocol.GitProtocol;
 import it.unisa.p2p.gitprotocol.GitProtocolImpl;
-import it.unisa.p2p.gitprotocol.operations.CommitOperation;
 import it.unisa.p2p.gitprotocol.operations.OperationMessages;
 import it.unisa.p2p.gitprotocol.storage.StorageDHT;
 import java.io.*;
 import java.util.Arrays;
-
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.logging.Logger;
-//import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AppTest {
 
@@ -24,7 +18,6 @@ public class AppTest {
     private final static String INITIAL_STRING = "String 1";
     private final static String SECOND_STRING = "String 2";
     private final static String SEC_INITIAL_STRING = "String 3";
-    private final static String SEC_SECOND_STRING = "String 4";
     private final static String BOOTSTRAP_HN = "127.0.0.1";
 
     private final static Logger log = Logger.getLogger(AppTest.class.getName());
