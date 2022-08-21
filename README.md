@@ -65,7 +65,11 @@ Se si vuole rieseguire un peer qualsiasi basta poi digitare solo questo comando 
 docker start -i MASTER-PEER    
 ```
 
-![Inizializzazione dell'ambiente con 4 peer](images/picture3.png)
+Inizializzazione dell'ambiente con 4 peer
+
+![](images/picture3.png)
+
+### Test
 
 
 
