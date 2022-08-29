@@ -4,7 +4,7 @@ Progetto accademico di [**Ciro Perfetto**](https://github.com/ciroperf)
 
 Corso di Laurea Magistrale in informatica: **Architetture distribuite per il Cloud**
 
-Professori: **Alberto Negro** **Carmine Spagnuolo** **Gennaro Cordasco**
+Professori: **Alberto Negro**, **Carmine Spagnuolo**, **Gennaro Cordasco**
 
 [Dipartimento di Informatica](http://www.di.unisa.it) - [Università degli Studi di Salerno](https://www.unisa.it/) (Italia)
 
