@@ -22,7 +22,7 @@ La classe GitRepository ha come attributi: una lista di file, un'hashmap di una 
 Vediamo ora nel dettaglio a cosa servono alcuni campi:
 
 - La lista di File serve a tenere traccia dei file in locale della repository, necessaria sia in fase di inizializzazione per poter ottere i file già presenti nella directory della repository
-- L'hashmap viene utilizzata per poter eseguire sia il push che il pull. Per ogni file presente nella lista di file viene inserita come chiave in questa hashmap l'oggetto file (così è possibile ottenere il percorso dove salvare il file) come chiave e i byte del file come valore. Quindi viene utilizzata questa hashmap per poter tenere traccia degli aggiornamenti sulla rete
+- L'hashmap viene utilizzata per poter eseguire sia il push che il pull. Per ogni file presente nella lista di file viene inserita come chiave in questa hashmap l'oggetto file (così è possibile ottenere il percorso dove salvare il file) e i byte del file come valore. Quindi viene utilizzata questa hashmap per poter tenere traccia degli aggiornamenti sulla rete
 - La lista di commit serve per poter analizzare il timestamp dei commit sulla repo e dei messaggi facoltativi da inserire quando viene eseguito un commit. I commit contengono anche il digest dei file presenti nella directory, in modo da individuare eventuali confitti.
 - Il digest serve per poter gestire i conflitti sia con l'operazione di push che di pull. Quando i file vengono confrontati viene analizzato il digest che sarebbe l'md5 della SequenceInputStream di tutti i file presenti nella repository. Così facendo è possibile individuare facilmente eventuali cambiamenti sui file e richiedere agli utenti, per esempio, di eseguire il pull prima di poter eseguire una push
 
